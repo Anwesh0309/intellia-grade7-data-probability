@@ -1,0 +1,81 @@
+/* ===== FLOATING BACKGROUND ANIMATIONS ===== */
+
+/* Shared rise animation — goes straight up with gentle sway */
+@keyframes floatRise {
+  0%   { transform: translateY(100vh) translateX(0px) scale(0.6); opacity: 0; }
+  8%   { opacity: 1; }
+  45%  { transform: translateY(50vh)  translateX(18px) scale(1); }
+  55%  { transform: translateY(40vh)  translateX(-14px) scale(1); }
+  92%  { opacity: 1; }
+  100% { transform: translateY(-10vh) translateX(6px) scale(0.8); opacity: 0; }
+}
+
+/* Emoji drift — lazy diagonal drift */
+@keyframes floatDrift {
+  0%   { transform: translateY(100vh) translateX(0) rotate(0deg);   opacity: 0; }
+  10%  { opacity: 1; }
+  40%  { transform: translateY(55vh)  translateX(22px) rotate(8deg); }
+  60%  { transform: translateY(35vh)  translateX(-18px) rotate(-6deg); }
+  90%  { opacity: 1; }
+  100% { transform: translateY(-8vh)  translateX(10px) rotate(15deg); opacity: 0; }
+}
+
+/* Bubble — perfectly round, slow rise with wobble */
+@keyframes bubbleRise {
+  0%   { transform: translateY(105vh) scale(0.3); opacity: 0; }
+  10%  { opacity: 1; transform: translateY(90vh) scale(1); }
+  30%  { transform: translateY(65vh) translateX(12px) scale(1.04); }
+  50%  { transform: translateY(45vh) translateX(-10px) scale(0.97); }
+  70%  { transform: translateY(28vh) translateX(8px) scale(1.02); }
+  90%  { opacity: 0.9; }
+  100% { transform: translateY(-5vh)  translateX(-4px) scale(0.7); opacity: 0; }
+}
+
+.floating-number {
+  position: absolute;
+  bottom: -60px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.9);
+  user-select: none;
+  pointer-events: none;
+  animation: floatRise linear infinite;
+  /* opacity set inline */
+  filter: blur(0.3px);
+}
+
+.floating-number.float-emoji {
+  animation-name: floatDrift;
+  filter: none;
+}
+
+.float-bubble {
+  position: absolute;
+  bottom: -80px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 35% 35%,
+    rgba(255, 255, 255, 0.35),
+    rgba(0, 188, 212, 0.12) 50%,
+    rgba(124, 92, 191, 0.08) 80%,
+    transparent 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(1px);
+  pointer-events: none;
+  animation: bubbleRise ease-in-out infinite;
+  /* opacity set inline */
+}
+
+/* Inner shine dot on each bubble */
+.float-bubble::after {
+  content: '';
+  position: absolute;
+  top: 20%;
+  left: 25%;
+  width: 28%;
+  height: 22%;
+  background: rgba(255, 255, 255, 0.45);
+  border-radius: 50%;
+  filter: blur(2px);
+}
