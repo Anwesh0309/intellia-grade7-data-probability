@@ -1,7 +1,9 @@
 // ──────────────────────────────────────────────────
 // Audio Narration Engine — Grade 7 Data & Probability
-// ElevenLabs primary · Web Speech API fallback
+// Pre-generated MP3s primary · ElevenLabs API fallback · Web Speech last resort
 // ──────────────────────────────────────────────────
+
+import { audioMap } from './audioMap.js';
 
 let currentQueue  = null;
 let isSpeaking    = false;
@@ -33,9 +35,16 @@ const getElevenLabsSettings = (speechStyle) => {
   }
 };
 
-// ─── ElevenLabs fetch ────────────────────────────
+// ─── Resolve audio URL: pre-generated → ElevenLabs API → null ────────────────
 export async function getAudioUrl(text, style) {
-  const cacheKey = `${text}_${style}`;
+  // 1. Pre-generated static file (zero API cost)
+  const mapKey = `${style}::${text}`;
+  if (audioMap && audioMap[mapKey]) {
+    return audioMap[mapKey];
+  }
+
+  // 2. ElevenLabs API (runtime fallback for any line not pre-generated)
+  const cacheKey = mapKey;
   if (elevenLabsCache.has(cacheKey)) return elevenLabsCache.get(cacheKey);
 
   const fetchPromise = (async () => {
@@ -47,21 +56,13 @@ export async function getAudioUrl(text, style) {
       `https://api.elevenlabs.io/v1/text-to-speech/${ELEVENLABS_VOICE_ID}`,
       {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'xi-api-key': apiKey,
-        },
-        body: JSON.stringify({
-          text,
-          model_id: 'eleven_multilingual_v2',
-          voice_settings: voiceSettings,
-        }),
+        headers: { 'Content-Type': 'application/json', 'xi-api-key': apiKey },
+        body: JSON.stringify({ text, model_id: 'eleven_multilingual_v2', voice_settings: voiceSettings }),
       }
     );
-
     if (!response.ok) {
-      const errText = await response.text().catch(() => '');
-      throw new Error(`ElevenLabs ${response.status}: ${errText}`);
+      const err = await response.text().catch(() => '');
+      throw new Error(`ElevenLabs ${response.status}: ${err}`);
     }
     const blob = await response.blob();
     return URL.createObjectURL(blob);
