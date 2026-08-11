@@ -229,7 +229,7 @@ export default function PlayPhase({ onComplete, audioEnabled }) {
                     <span className="world-score">{completed.score}/{completed.total}</span>
                   </div>
                 )}
-                {unlocked && !completed && <div className="world-play-btn">▶ PLAY</div>}
+                {unlocked && !completed && <div className="world-play-btn">▶ PRACTICE</div>}
               </div>
             );
           })}

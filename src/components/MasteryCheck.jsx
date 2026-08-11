@@ -141,18 +141,29 @@ export default function MasteryCheck({ onComplete, audioEnabled }) {
       {MASTERY_QUESTIONS.map((mq, i) => {
         const state = i < qIdx ? 'done' : i === qIdx ? 'active' : 'pending';
         return (
-          <div key={i} style={{
-            padding: '4px 12px', borderRadius: 999,
-            fontSize: '0.78rem', fontWeight: 700,
-            fontFamily: 'var(--font-display)',
-            background: state === 'done'   ? 'rgba(76,175,80,0.25)'
-                       : state === 'active' ? 'rgba(255,193,7,0.2)'
-                       : 'rgba(255,255,255,0.07)',
-            border: `1px solid ${state === 'done' ? '#4caf50' : state === 'active' ? '#ffd54f' : 'rgba(255,255,255,0.15)'}`,
-            color:  state === 'done' ? '#a5d6a7' : state === 'active' ? '#ffd54f' : 'rgba(255,255,255,0.4)',
-          }}>
+          <button
+            key={i}
+            type="button"
+            onClick={() => {
+              setQIdx(i);
+              setAnswered(false);
+              setSelected(null);
+            }}
+            title={`Jump to ${mq.topic} question`}
+            style={{
+              padding: '4px 12px', borderRadius: 999,
+              fontSize: '0.78rem', fontWeight: 700,
+              fontFamily: 'var(--font-display)',
+              cursor: 'pointer',
+              background: state === 'done'   ? 'rgba(76,175,80,0.25)'
+                         : state === 'active' ? 'rgba(255,193,7,0.2)'
+                         : 'rgba(255,255,255,0.07)',
+              border: `1px solid ${state === 'done' ? '#4caf50' : state === 'active' ? '#ffd54f' : 'rgba(255,255,255,0.15)'}`,
+              color:  state === 'done' ? '#a5d6a7' : state === 'active' ? '#ffd54f' : 'rgba(255,255,255,0.8)',
+            }}
+          >
             {mq.topicIcon} {mq.topic} {state === 'done' ? '✓' : ''}
-          </div>
+          </button>
         );
       })}
     </div>

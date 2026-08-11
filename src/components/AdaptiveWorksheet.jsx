@@ -238,6 +238,31 @@ export default function AdaptiveWorksheet({ masteryLevel, onComplete, audioEnabl
               style={{ width: `${progress}%`, background: `linear-gradient(90deg,${levelMeta.color},#ffd54f)` }} />
           </div>
         </div>
+        <div style={{ display: 'flex', gap: 8, justifyContent: 'center', marginTop: 10 }}>
+          {problems.map((_, i) => (
+            <button
+              key={i}
+              type="button"
+              onClick={() => {
+                setPIdx(i);
+                setAnswered(false);
+                setSelected(null);
+              }}
+              title={`Jump to Problem ${i + 1}`}
+              style={{
+                padding: '4px 12px', borderRadius: 999,
+                fontSize: '0.78rem', fontWeight: 700,
+                fontFamily: 'var(--font-display)',
+                cursor: 'pointer',
+                background: i === pIdx ? `${levelMeta.color}44` : 'rgba(255,255,255,0.08)',
+                border: `1px solid ${i === pIdx ? levelMeta.color : 'rgba(255,255,255,0.18)'}`,
+                color: i === pIdx ? '#ffffff' : 'rgba(255,255,255,0.7)',
+              }}
+            >
+              P{i + 1}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Problem card */}

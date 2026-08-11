@@ -519,10 +519,17 @@ export default function SimulatePhase({ onComplete, audioEnabled }) {
 
       <div className="progress-dots">
         {STATIONS.map((s, i) => (
-          <div key={i} className="simulate-dot-wrapper">
+          <button
+            key={i}
+            type="button"
+            className="simulate-dot-wrapper"
+            onClick={() => setStation(i)}
+            title={`Go to Station ${i + 1}: ${s.title}`}
+            style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 4 }}
+          >
             <div className={`progress-dot ${i === station ? 'active' : i < station ? 'completed' : ''}`} />
             <span className="simulate-dot-label">{s.icon}</span>
-          </div>
+          </button>
         ))}
       </div>
 

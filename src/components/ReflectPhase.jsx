@@ -149,7 +149,14 @@ export default function ReflectPhase({ stats, onRestart, onGoHome, audioEnabled 
           </div>
           <div className="reflect-progress">
             {REFLECT_QUESTIONS.map((_, i) => (
-              <div key={i} className={`reflect-dot ${i === teachIdx ? 'active' : i < teachIdx ? 'done' : ''}`} />
+              <button
+                key={i}
+                type="button"
+                className={`reflect-dot ${i === teachIdx ? 'active' : i < teachIdx ? 'done' : ''}`}
+                onClick={() => { setTeachIdx(i); setTeachAnswered(false); }}
+                title={`Jump to Question ${i + 1}`}
+                style={{ cursor: 'pointer', border: 'none', padding: 0 }}
+              />
             ))}
           </div>
         </div>
